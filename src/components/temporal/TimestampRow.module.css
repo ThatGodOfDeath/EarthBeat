@@ -1,0 +1,180 @@
+/* TimestampRow.module.css — Phase 5D */
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.25rem;
+  border-bottom: 1px solid transparent;
+  transition: background-color var(--transition-speed) ease;
+}
+
+.row:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.activeRow {
+  border-left: 2px solid var(--primary);
+  padding-left: 0.4rem;
+}
+
+.checkbox {
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+.timestampContainer {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.timestampBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+  flex-wrap: wrap;
+  overflow: hidden;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.timestampBtn:hover .dateStr {
+  color: var(--primary);
+}
+
+.unavailableBtn {
+  cursor: default;
+}
+
+.unavailableBtn:hover .dateStr {
+  color: inherit;
+}
+
+.unavailableRow {
+  opacity: 0.7;
+}
+
+.unavailableBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #f59e0b;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  margin-left: 0.2rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* ── Tooltip popup on hover ────────────────────────────────── */
+.tooltipPopup {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.45rem 0.65rem;
+  background-color: var(--background, #121212);
+  border: 1px solid var(--accent, #666);
+  font-size: 0.7rem;
+  color: var(--text, #eee);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.timestampContainer:hover .tooltipPopup,
+.timestampContainer:focus-within .tooltipPopup {
+  display: flex;
+}
+
+.tooltipHeader {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--accent, #aaa);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.missingPills {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.obsPill {
+  display: inline-block;
+  padding: 0.12rem 0.4rem;
+  font-size: 0.64rem;
+  font-weight: 800;
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  letter-spacing: 0.02em;
+}
+
+.dateStr {
+  font-size: 0.72rem;
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.separator {
+  font-size: 0.68rem;
+  color: var(--accent);
+}
+
+.timeStr {
+  font-size: 0.72rem;
+  color: var(--secondary);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.activeDot {
+  flex-shrink: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--primary);
+}
+
+.deleteBtn {
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  line-height: 1;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0.2rem;
+  transition: color var(--transition-speed) ease;
+  font-weight: 400;
+}
+
+.deleteBtn:hover {
+  color: var(--text);
+}
+
+.deleteBtn:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}

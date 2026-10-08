@@ -1,0 +1,706 @@
+/* ExplorePage.module.css — Phase 5D */
+
+/* ── App Shell: wraps main content + right timestamp panel ── */
+.appShell {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  padding: 2rem 1.5rem 4rem;
+  min-height: 100vh;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  /* Leave space for timestamp panel toggle button */
+  padding-right: calc(1.5rem + 32px);
+  transition: padding-right var(--transition-speed) ease;
+}
+
+/* When right panel is open, shrink the main content area */
+.pageWithPanel {
+  padding-right: calc(min(32vw, 420px) + 1.5rem);
+}
+
+@media (max-width: 860px) {
+  .page {
+    padding-right: 1.5rem;
+  }
+  .pageWithPanel {
+    padding-right: 1.5rem;
+  }
+}
+
+/* ── Navigation ───────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.navBack {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: color var(--transition-speed) ease;
+}
+
+.navBack:hover {
+  color: var(--primary);
+}
+
+/* ── Header ──────────────────────────────────────────── */
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.locationTitle {
+  font-size: 2.2rem;
+  color: var(--text);
+  line-height: 1.15;
+}
+
+/* ── UNIFIED MOTHERBOX ───────────────────────────────── */
+.motherbox {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  padding: 1.75rem 2rem;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.motherbox::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Motherbox Header ────────────────────────────────── */
+.motherboxHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.motherboxTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.motherboxTitle {
+  font-size: 1.35rem;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.motherboxMeta {
+  font-size: 0.8rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+/* ── Divider ─────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background-color: var(--accent);
+  opacity: 0.35;
+}
+
+/* ── Two-Column Instrument Body (Desktop) ────────────── */
+.instrumentBody {
+  display: flex;
+  flex-direction: row;
+  gap: 1.75rem;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.columnHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.columnTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: 0.01em;
+}
+
+.locationTag,
+.coordsTag {
+  font-size: 0.72rem;
+  color: #134fa4;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Left Column: Global Temperature Map (63-65%) */
+.mapColumn {
+  flex: 0 0 63%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 1.1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Right Column: Local Temperature Sonification (35-37%) */
+.localColumn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 1.1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.chartContainer {
+  width: 100%;
+  margin-top: -0.25rem;
+}
+
+/* Local Readout (uncluttered, supports graph) */
+.localReadout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.2rem;
+  padding: 0.35rem 0 0.15rem;
+}
+
+.primaryTemp {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.readoutDate {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #134fa4;
+  letter-spacing: 0.02em;
+}
+
+.readoutFrequency {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+  margin-top: 0.25rem;
+}
+
+.freqValue {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: 0.01em;
+}
+
+.freqLabel {
+  font-size: 0.65rem;
+  color: #4b5563;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Shared Timeline Section (Bottom) ────────────────── */
+.timelineSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  padding-top: 0.25rem;
+}
+
+.sliderRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 680px;
+}
+
+.sliderLabel {
+  font-size: 0.72rem;
+  color: var(--accent);
+  font-weight: 700;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+
+.sliderTrack {
+  flex: 1;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  outline: none;
+  cursor: pointer;
+  border: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.slider:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}
+
+.timelineTimestamp {
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+}
+
+.timelineDateLabel {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.timelineSeparator {
+  color: var(--accent);
+  margin: 0 0.15rem;
+}
+
+.timelineTimeLabel {
+  color: var(--secondary);
+  font-weight: 700;
+}
+
+/* ── Playback Controls (Bottom) ──────────────────────── */
+.playbackRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  padding-top: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.btnPlay {
+  font-family: 'Playwrite AU NSW', cursive;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.65rem 2.6rem;
+  cursor: pointer;
+  border: 1px solid var(--primary);
+  background-color: var(--primary);
+  color: var(--background);
+  transition: background-color var(--transition-speed) ease,
+              border-color var(--transition-speed) ease;
+}
+
+.btnPlay:hover {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+}
+
+.btnPlay:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.btnSecondaryText {
+  font-family: 'Playwrite AU NSW', cursive;
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem 0.6rem;
+  letter-spacing: 0.02em;
+  transition: color var(--transition-speed) ease;
+}
+
+.btnSecondaryText:hover {
+  color: var(--secondary);
+}
+
+/* ── Audio Channels (Phase 7) ─────────────────────────── */
+.audioChannelsWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 0.35rem 0.75rem;
+  flex-wrap: wrap;
+}
+
+.audioChannelsLabel {
+  font-family: 'Playwrite AU NSW', cursive;
+  font-size: 0.7rem;
+  color: #4b5563;
+  margin-right: 0.25rem;
+}
+
+.audioChannelBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 1px solid #d1d5db;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #4b5563;
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.audioChannelBtn:hover {
+  border-color: var(--primary);
+  color: #111827;
+  background-color: #f9fafb;
+}
+
+.audioChannelActive {
+  background-color: #f3f4f6;
+  border-color: var(--primary);
+  color: #111827;
+}
+
+.channelLed {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #a0aec0;
+  transition: background-color var(--transition-speed) ease;
+}
+
+.audioChannelActive .channelLed {
+  background-color: var(--primary);
+}
+
+/* ── Error & Status States ───────────────────────────── */
+.statusMessage {
+  font-size: 0.95rem;
+  color: var(--accent);
+  font-style: italic;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.errorMessage {
+  font-size: 1rem;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.btnPrimary {
+  font-family: 'Playwrite AU NSW', cursive;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.65rem 2.2rem;
+  cursor: pointer;
+  border: 1px solid var(--primary);
+  background-color: var(--primary);
+  color: var(--background);
+}
+
+.btnPrimary:hover {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+}
+
+/* ── Responsive: Tablet & Mobile ─────────────────────── */
+@media (max-width: 860px) {
+  .instrumentBody {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .mapColumn,
+  .localColumn {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .motherbox {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+@media (max-width: 540px) {
+  .page {
+    padding: 1.5rem 1rem 3rem;
+    gap: 1.25rem;
+  }
+
+  .locationTitle {
+    font-size: 1.8rem;
+  }
+
+  .motherbox {
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+  }
+
+  .primaryTemp {
+    font-size: 1.9rem;
+  }
+
+  .playbackRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btnPlay {
+    width: 100%;
+    text-align: center;
+  }
+
+  .btnSecondaryText {
+    text-align: center;
+  }
+}
+
+/* ── Environmental System Tabs (Phase 10: 4 Tabs) ─────────────────────── */
+.systemTabsBar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .systemTabsBar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.systemTab {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  font-family: inherit;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 150ms ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.systemTab:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.systemTabActive {
+  background: #ffffff !important;
+  border-color: var(--primary, #1b9aaa) !important;
+  box-shadow: 0 0 0 2px rgba(27, 154, 170, 0.25) !important;
+}
+
+.tabSymbolBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 4px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+  flex-shrink: 0;
+}
+
+.systemTabActive .tabSymbolBadge {
+  background: var(--primary, #1b9aaa);
+  border-color: var(--primary, #1b9aaa);
+  color: #ffffff;
+}
+
+.tabTextGroup {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.systemTabTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+}
+
+.systemTabSubtitle {
+  font-size: 0.7rem;
+  color: #4b5563;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.1rem;
+}
+
+/* ── System Summary Comparison Banner ────────────────────────────────── */
+.systemSummaryBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #111827;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.bannerMetricGroup {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.bannerDiff {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* ── Dual Column Grid (Side-by-Side on Desktop, Stacked on Mobile) ───── */
+.dualColumnGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (max-width: 960px) {
+  .dualColumnGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.systemCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 1.1rem;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.systemCard:focus-within {
+  border-color: rgba(27, 154, 170, 0.4);
+}
+
+.sonificationPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  padding: 0.18rem 0.55rem;
+  border-radius: 12px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+}
+
+.pitchPill {
+  background: rgba(27, 154, 170, 0.12);
+  border-color: rgba(27, 154, 170, 0.4);
+  color: #0e7490;
+  font-weight: 700;
+}
+

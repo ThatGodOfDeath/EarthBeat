@@ -1,0 +1,302 @@
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #e2e8f0;
+  background-color: #0f172a;
+  min-height: 100vh;
+}
+
+.header {
+  border-bottom: 1px solid #334155;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #38bdf8;
+  margin: 0 0 0.5rem;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.distinctionBanner {
+  background: linear-gradient(135deg, rgba(14, 116, 144, 0.25), rgba(15, 23, 42, 0.6));
+  border: 1px solid #0891b2;
+  border-left: 5px solid #06b6d4;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.distinctionBanner h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: #22d3ee;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.distinctionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .distinctionGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.distinctionCard {
+  background-color: rgba(15, 23, 42, 0.7);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #1e293b;
+}
+
+.distinctionCard strong {
+  color: #f8fafc;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.distinctionCard p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+
+.controlsCard {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.controlsRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dateInputGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dateInputGroup label {
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.dateInput {
+  background-color: #0f172a;
+  border: 1px solid #475569;
+  color: #f8fafc;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.loadButton {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.55rem 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.loadButton:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.loadButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.presetButtons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.presetLabel {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.presetBtn {
+  background-color: #334155;
+  color: #cbd5e1;
+  border: 1px solid #475569;
+  border-radius: 4px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.presetBtn:hover {
+  background-color: #475569;
+  color: #f8fafc;
+}
+
+.errorBanner {
+  background-color: rgba(239, 68, 68, 0.15);
+  border: 1px solid #ef4444;
+  color: #fca5a5;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+}
+
+.warningBanner {
+  background-color: rgba(245, 158, 11, 0.15);
+  border: 1px solid #f59e0b;
+  color: #fde68a;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.card {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.cardTitle {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #38bdf8;
+  margin: 0 0 1rem;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 0.5rem;
+}
+
+.imageContainer {
+  background-color: #000;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #334155;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 250px;
+}
+
+.frameImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.imageOverlay {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background-color: rgba(15, 23, 42, 0.85);
+  color: #94a3b8;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.metaItem {
+  background-color: #0f172a;
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid #334155;
+}
+
+.metaLabel {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+
+.metaValue {
+  font-size: 0.95rem;
+  color: #f8fafc;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.metaValueLink {
+  color: #38bdf8;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.timestampsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.timestampPill {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  text-align: center;
+}
+
+.jsonViewer {
+  background-color: #0b1120;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #a5f3fc;
+  margin-top: 1rem;
+  max-height: 250px;
+}

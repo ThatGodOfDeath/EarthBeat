@@ -1,0 +1,92 @@
+/* GlobalTemperatureMap.module.css */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: 100%;
+}
+
+/* ── Canvas stack ────────────────────────────────────────────────────── */
+.mapContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  background-color: #0a0e1a;  /* Deep ocean color */
+  overflow: hidden;
+  border: 1px solid rgba(179, 177, 169, 0.4);
+}
+
+.rasterCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: auto;
+}
+
+.overlayCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: auto;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-style: italic;
+  background-color: #0a0e1a;
+}
+
+/* ── Temperature legend ──────────────────────────────────────────────── */
+.legendWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.legendCanvas {
+  width: 100%;
+  max-width: 260px;
+  height: 6px;
+  image-rendering: auto;
+}
+
+.legendTicks {
+  display: flex;
+  justify-content: space-between;
+  max-width: 260px;
+}
+
+.legendTick {
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+}
+
+/* ── Attribution ─────────────────────────────────────────────────────── */
+.attribution {
+  font-size: 0.62rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  opacity: 0.75;
+}
+
+@media (max-width: 540px) {
+  .legendCanvas,
+  .legendTicks {
+    max-width: 100%;
+  }
+}

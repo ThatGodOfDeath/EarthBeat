@@ -1,0 +1,212 @@
+================================================================================
+          EARTH JUKEBOX — RENDER DEPLOYMENT GUIDE (render.com)
+================================================================================
+
+This guide provides complete instructions for deploying Earth Jukebox to Render
+(https://render.com).
+
+--------------------------------------------------------------------------------
+1. ARCHITECTURE OVERVIEW
+--------------------------------------------------------------------------------
+
+Earth Jukebox is composed of two components in a single monorepo:
+
+  1. Backend API (Python / FastAPI):
+     - Located in the `/backend` directory.
+     - Connects to NASA GEOS-FP OPeNDAP servers using xarray and netCDF4.
+     - Deployed as a: Render "Web Service" (Python runtime).
+
+  2. Frontend UI (React 19 / Vite):
+     - Located in the root directory (`/`).
+     - Interactive maps, sonification audio synthesizer, and environmental data.
+     - Deployed as a: Render "Static Site" (Global CDN, fast and cost-effective).
+
+--------------------------------------------------------------------------------
+2. PREREQUISITES
+--------------------------------------------------------------------------------
+
+  1. A GitHub or GitLab account with this repository pushed.
+  2. A Render account (free tier available at https://render.com).
+  3. Linked your GitHub/GitLab account to Render.
+
+================================================================================
+METHOD A: MANUAL DEPLOYMENT (RENDER DASHBOARD) — RECOMMENDED
+================================================================================
+
+Deploy the backend first so you have its URL ready when configuring the frontend.
+
+--------------------------------------------------------------------------------
+STEP 1: DEPLOY BACKEND (WEB SERVICE)
+--------------------------------------------------------------------------------
+
+1. Log in to the Render Dashboard (https://dashboard.render.com).
+2. Click "New +" and select "Web Service".
+3. Choose "Build and deploy from a Git repository" and select your Earth Jukebox repo.
+4. Configure the Web Service settings:
+
+   - Name: earth-jukebox-backend (or your choice)
+   - Region: Oregon (US West) or Ohio (US East) — choose closest to NASA NCCS servers
+   - Branch: main (or your active deployment branch)
+   - Root Directory: backend
+   - Runtime: Python 3
+   - Build Command: pip install -r requirements.txt
+   - Start Command: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+   - Plan: Free (or Starter for persistent zero-sleep performance)
+
+5. Configure Health Check:
+   - Click "Advanced"
+   - Health Check Path: /health
+
+6. Add Environment Variables:
+   Click "Add Environment Variable" and add:
+
+   - PYTHON_VERSION = 3.11.9
+   - NASA_GEOS_FP_URL = https://opendap.nccs.nasa.gov/dods/GEOS-5/fp/0.25_deg/assim/inst3_2d_asm_Nx
+   - CORS_ORIGINS = https://earth-jukebox.onrender.com,http://localhost:5173
+     (Note: You can update this with your exact frontend URL after Step 2)
+
+7. Click "Create Web Service".
+   Wait for the build and deployment to complete.
+   Once deployed, copy your backend URL (e.g., https://earth-jukebox-backend.onrender.com).
+   Test it in your browser: https://earth-jukebox-backend.onrender.com/health
+   Expected response: {"status":"ok","service":"earth-jukebox-api"}
+
+--------------------------------------------------------------------------------
+STEP 2: DEPLOY FRONTEND (STATIC SITE)
+--------------------------------------------------------------------------------
+
+1. On the Render Dashboard, click "New +" and select "Static Site".
+2. Select the same Git repository.
+3. Configure the Static Site settings:
+
+   - Name: earth-jukebox (or your choice)
+   - Branch: main (or your active deployment branch)
+   - Root Directory: (Leave empty — use root of repo)
+   - Build Command: npm install && npm run build
+   - Publish Directory: dist
+
+4. Add Environment Variable:
+   - Key: VITE_BACKEND_URL
+   - Value: https://earth-jukebox-backend.onrender.com
+     (Use the exact backend URL copied from Step 1, without trailing slash)
+
+   IMPORTANT: Vite bakes environment variables into JavaScript assets during
+   build time (`npm run build`). This variable must be set before building!
+
+5. Configure Single-Page Application (SPA) Routing Rewrite:
+   Because Earth Jukebox uses client-side routing (`react-router-dom` with `/`
+   and `/explore`), you must add a rewrite rule so direct links or page refreshes
+   do not return 404 errors.
+
+   - Scroll down to the "Redirects / Rewrites" section.
+   - Click "Add Rule":
+     * Type: Rewrite
+     * Source: /*
+     * Destination: /index.html
+   - Click "Save".
+
+6. Click "Create Static Site".
+   Render will run `npm install && npm run build` and deploy the site.
+   Once deployed, copy your frontend URL (e.g., https://earth-jukebox.onrender.com).
+
+--------------------------------------------------------------------------------
+STEP 3: SYNC CORS IN BACKEND
+--------------------------------------------------------------------------------
+
+1. Open your Backend Web Service in the Render Dashboard.
+2. Go to "Environment".
+3. Update `CORS_ORIGINS` to include your new frontend URL:
+   Example:
+   CORS_ORIGINS = https://earth-jukebox.onrender.com,http://localhost:5173
+4. Save Changes. Render will automatically redeploy the backend with the new CORS origin.
+
+================================================================================
+METHOD B: INFRASTRUCTURE AS CODE (RENDER BLUEPRINT)
+================================================================================
+
+If you prefer automated setup, you can add a `render.yaml` file to the root of
+your repository and deploy both services at once.
+
+Sample `render.yaml`:
+--------------------------------------------------------------------------------
+services:
+  # 1. Backend Web Service
+  - type: web
+    name: earth-jukebox-backend
+    runtime: python
+    rootDir: backend
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: NASA_GEOS_FP_URL
+        value: https://opendap.nccs.nasa.gov/dods/GEOS-5/fp/0.25_deg/assim/inst3_2d_asm_Nx
+      - key: CORS_ORIGINS
+        value: https://earth-jukebox-web.onrender.com,http://localhost:5173
+
+  # 2. Frontend Static Site
+  - type: static
+    name: earth-jukebox-web
+    rootDir: .
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_BACKEND_URL
+        fromService:
+          type: web
+          name: earth-jukebox-backend
+          property: host
+--------------------------------------------------------------------------------
+
+To use the Blueprint:
+1. Commit `render.yaml` to the root of your repo.
+2. In Render, click "New +" -> "Blueprint".
+3. Select the repository and click "Apply". Render configures both services automatically!
+
+================================================================================
+3. IMPORTANT CONSIDERATIONS & TROUBLESHOOTING
+================================================================================
+
+1. RENDER FREE TIER COLD STARTS (SPIN-DOWN):
+   - On Render's Free tier, Web Services spin down after 15 minutes of inactivity.
+   - When a visitor visits the site after idle time, the first API request might
+     take 30–60 seconds while Render spins up the container and opens the remote
+     NASA OPeNDAP dataset.
+   - The UI includes fallback handling and loading spinners, but if you require
+     instant 24/7 availability, upgrade the backend to a "Starter" plan ($7/mo)
+     or use an external uptime monitor (e.g. UptimeRobot) to ping `/health` every 10 min.
+
+2. SINGLE-PAGE APPLICATION ROUTING (404 NOT FOUND ON REFRESH):
+   - Symptom: Visiting `/` works, but refreshing on `/explore` gives "404 Not Found".
+   - Cause: Static hosting tries to find a file named `explore` on disk.
+   - Solution: Ensure the Rewrite rule (`/*` -> `/index.html`) is active in the
+     Static Site's "Redirects / Rewrites" settings.
+
+3. CORS ISSUES:
+   - Symptom: Browser console shows "Access to fetch at ... blocked by CORS policy".
+   - Solution: Check that the backend's `CORS_ORIGINS` environment variable
+     exactly matches the frontend URL scheme and domain (e.g., https://earth-jukebox.onrender.com),
+     with no trailing slash.
+
+4. UPDATING VITE ENVIRONMENT VARIABLES:
+   - If you ever change `VITE_BACKEND_URL` on Render, you MUST trigger a manual deploy:
+     Go to the Static Site -> "Manual Deploy" -> "Clear build cache & deploy".
+     Because Vite bundles variables at build time, runtime changes do not take effect
+     without rebuilding the static assets.
+
+5. REMOTE NASA OPENDAP CONNECTION:
+   - The backend directly accesses `opendap.nccs.nasa.gov`.
+   - Outbound HTTPS traffic is fully allowed on Render web services.
+   - Verify connection by checking backend logs:
+     `[GEOS-FP] Initialized dataset connection: 3-hourly assimilation`
+
+================================================================================
+================================================================================

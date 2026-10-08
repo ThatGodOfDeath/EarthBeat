@@ -1,0 +1,229 @@
+================================================================================
+EARTH JUKEBOX — DIRECTORY STRUCTURE & TASK SPECIFICATION
+================================================================================
+
+Earth Jukebox is a minimalist, scientific web interface for exploring Earth
+data through interactive visualization and sonification. This document outlines
+all directories, files, and their specific responsibilities across Phases 1, 2, and 3.
+
+================================================================================
+ROOT CONFIGURATION & BUILD FILES
+================================================================================
+
+/
+├── index.html
+│   └── Task: HTML entry point for the Vite Single Page Application (SPA).
+│       Configures page title, viewport meta tags, and loads the root script.
+│
+├── package.json
+│   └── Task: Project manifest defining metadata, npm scripts (dev, build, lint,
+│       preview), and dependencies (React 19, react-router-dom, d3-geo,
+│       topojson-client, react-simple-maps, vite, oxlint).
+│
+├── package-lock.json
+│   └── Task: Deterministic dependency tree lock file.
+│
+├── vite.config.js
+│   └── Task: Vite bundler configuration including the @vitejs/plugin-react plugin.
+│
+├── .oxlintrc.json
+│   └── Task: High-performance linter configuration for syntax and rule enforcement.
+│
+├── .gitignore
+│   └── Task: Specifies untracked files and folders (node_modules, dist, etc.).
+│
+├── README.md
+│   └── Task: Project documentation, architectural diagrams, NASA GEOS-FP
+│       specifications, frequency mapping formulas, and attribution.
+│
+└── dir_structure.txt
+    └── Task: Complete directory tree reference with task descriptions (this file).
+
+================================================================================
+PUBLIC ASSETS
+================================================================================
+
+public/
+├── favicon.svg
+│   └── Task: SVG favicon representing Earth Jukebox in browser tabs.
+│
+└── icons.svg
+    └── Task: Reusable SVG icon sprite sheet used across the web application.
+
+================================================================================
+SOURCE CODE (src/)
+================================================================================
+
+src/
+├── main.jsx
+│   └── Task: Application entry point. Mounts the React root into the DOM and
+│       wraps the app with BrowserRouter and strict mode.
+│
+├── App.jsx
+│   └── Task: Top-level router definition establishing URL routes:
+│       • "/"        → HomePage (Phase 1 Location Selection)
+│       • "/explore" → ExplorePage (Phase 2 & 3 Motherbox Instrument)
+│
+├── App.css
+│   └── Task: Minimal top-level application wrapper styles.
+│
+└── index.css
+    └── Task: Global CSS variables (design tokens: --text, --background, --accent,
+        --primary, --secondary), typography font declarations (Playwrite AU NSW),
+        CSS reset rules, and gradient border utilities.
+
+--------------------------------------------------------------------------------
+ASSETS (src/assets/)
+--------------------------------------------------------------------------------
+
+src/assets/
+├── hero.png
+│   └── Task: Visual graphic asset displayed on the home page hero section.
+│
+├── react.svg
+│   └── Task: React SVG vector icon.
+│
+└── vite.svg
+    └── Task: Vite SVG vector icon.
+
+--------------------------------------------------------------------------------
+COMPONENTS (src/components/)
+--------------------------------------------------------------------------------
+
+src/components/
+├── DataInfoTooltip.jsx
+│   └── Task: Accessible scientific metadata popover control (ⓘ button).
+│       Displays Data Source (NASA GEOS-FP), Variable (T2M), Spatial Resolution,
+│       Temporal Resolution, and Provider. Supports hover, click/tap toggle,
+│       keyboard navigation (Tab/Enter/Space/Escape), and click-outside dismissal.
+│
+├── DataInfoTooltip.module.css
+│   └── Task: CSS module for DataInfoTooltip. Sets absolute positioning to prevent
+│       layout shifts and enforces 280–340px width with no shadows or glows.
+│
+├── GlobalTemperatureMap.jsx
+│   └── Task: Canvas-based global temperature raster renderer.
+│       Uses an HTML5 2D Canvas with putImageData() to paint the 360×180 T2M field,
+│       an overlay canvas with d3-geo for vector country boundaries and the selected
+│       location marker dot, and a continuous scientific temperature legend (-30°C to +45°C).
+│
+├── GlobalTemperatureMap.module.css
+│   └── Task: CSS module for the global map canvas container (2:1 aspect ratio),
+│       dark ocean base, temperature legend bar, and NASA attribution text.
+│
+├── LocationControls.jsx
+│   └── Task: Interactive location selection controls for Phase 1. Provides Country
+│       and City dropdown selectors and a browser Geolocation trigger button.
+│
+├── LocationControls.module.css
+│   └── Task: CSS module styling dropdown menus, labels, and geolocation buttons.
+│
+├── SelectedLocation.jsx
+│   └── Task: Displays the currently selected place name, formatted latitude/longitude,
+│       and coordinate badges.
+│
+├── SelectedLocation.module.css
+│   └── Task: CSS module for the selected location text and coordinate readout.
+│
+├── TemperatureChart.jsx
+│   └── Task: Lightweight SVG line chart for local hourly temperature time series.
+│       Renders data points, grid lines, axes labels, and active observation indicator.
+│       Allows clicking points to scrub through the timeline.
+│
+├── TemperatureChart.module.css
+│   └── Task: CSS module for SVG chart lines, data point circles, and active rings.
+│
+├── WorldMap.jsx
+│   └── Task: Phase 1 interactive SVG world map built on react-simple-maps.
+│       Enables clicking countries to select them, with zoom and pan joystick controls.
+│
+└── WorldMap.module.css
+    └── Task: CSS module for the SVG world map, zoom buttons, pan joystick, and country hover states.
+
+--------------------------------------------------------------------------------
+DATA SOURCES & CATALOGUES (src/data/)
+--------------------------------------------------------------------------------
+
+src/data/
+├── citiesByCountry.js
+│   └── Task: Curated catalogue mapping countries to primary cities with
+│       approximate geographic coordinates.
+│
+├── countries.js
+│   └── Task: Country name translation utilities reconciling dropdown labels with
+│       world-atlas / GeoJSON feature names.
+│
+└── nasa/
+    └── geosfp/
+        └── dhaka_t2m.json
+            └── Task: Verified development subset of NASA GEOS-FP T2M data for
+                Dhaka, Bangladesh (16 3-hourly observations across 29–30 Sep 2026).
+                Serves as the ground-truth anchor for temperature and sonification.
+
+--------------------------------------------------------------------------------
+PAGES (src/pages/)
+--------------------------------------------------------------------------------
+
+src/pages/
+├── HomePage.jsx
+│   └── Task: Phase 1 landing page. Combines the interactive WorldMap, LocationControls,
+│       SelectedLocation display, and forward navigation to the ExplorePage.
+│       Integrates Nominatim geocoding and reverse geocoding.
+│
+├── HomePage.module.css
+│   └── Task: CSS module for the home page layout, title typography, and control grid.
+│
+├── ExplorePage.jsx
+│   └── Task: Phase 3 unified "Motherbox" instrument page.
+│       Combines the GlobalTemperatureMap (left column ~63%) and Local Temperature
+│       Sonification (right column ~37%) into a single interconnected instrument.
+│       Hosts the Web Audio oscillator engine, shared bottom timeline slider, and
+│       synchronized PLAY / PAUSE / REPLAY controls.
+│
+└── ExplorePage.module.css
+    └── Task: CSS module for the Motherbox instrument, desktop 2-column layout,
+        divider rules, bottom timeline slider, and responsive single-column mobile stack.
+
+--------------------------------------------------------------------------------
+SERVICES (src/services/)
+--------------------------------------------------------------------------------
+
+src/services/
+├── globalTemperatureService.js
+│   └── Task: Data service for global NASA GEOS-FP 2-meter air temperature fields.
+│       Synthesizes and caches 360×180 Float32Array grids anchored to verified
+│       NASA data (Dhaka + reference cities), extracts coordinate values, and
+│       pre-warms the cache for lag-free scrubbing.
+│
+└── temperatureService.js
+    └── Task: Data service for local temperature time-series extraction.
+        Decouples the React UI and sonification engine from dataset storage,
+        returning generic TemperatureDataset objects for requested coordinates.
+
+--------------------------------------------------------------------------------
+UTILITIES & MATHEMATICS (src/utils/)
+--------------------------------------------------------------------------------
+
+src/utils/
+└── sonification.js
+    └── Task: Mathematical utilities for temperature sonification.
+        Implements the frequency mapping formula:
+        Frequency (Hz) = 500 + 100 × (T - T_min)
+        Includes normalization helpers and series min/max computation.
+
+--------------------------------------------------------------------------------
+VISUALIZATION UTILITIES (src/visualization/)
+--------------------------------------------------------------------------------
+
+src/visualization/
+├── projection.js
+│   └── Task: Equirectangular (Plate Carrée) projection math.
+│       Maps geographic coordinates (latitude, longitude) to canvas pixel coordinates
+│       (x, y) and grid cell indices, handling coordinate bounds and wrapping.
+│
+└── temperatureColorScale.js
+    └── Task: Scientific continuous temperature color ramp.
+        Implements a 10-stop piecewise-linear gradient from -50°C (deep indigo) to
+        +50°C (dark maroon) inspired by NASA SVS GEOS-FP visualization (SVS 5147).
+        Provides temperatureToRGBA() for raster painting and legend stop metadata.
+================================================================================

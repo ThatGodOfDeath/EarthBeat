@@ -1,0 +1,121 @@
+/* HomePage.module.css */
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  padding: 3rem 2rem 4rem;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ── Header ──────────────────────────────────────────── */
+.header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title {
+  color: var(--text);
+  /* h1 size from global typography */
+}
+
+.tagline {
+  font-size: 1rem;
+  color: var(--accent);
+  font-style: italic;
+}
+
+/* ── Map ─────────────────────────────────────────────── */
+.mapSection {
+  width: 100%;
+}
+
+/* ── Controls ─────────────────────────────────────────── */
+.controlsSection {
+  width: 100%;
+}
+
+/* ── Selected location ────────────────────────────────── */
+.selectedSection {
+  width: 100%;
+
+  /* Gradient border on the selected-location block */
+  position: relative;
+  padding: 1.5rem 2rem;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Pseudo-element gradient border */
+.selectedSection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Explore ─────────────────────────────────────────── */
+.exploreSection {
+  display: flex;
+  justify-content: center;
+}
+
+.exploreBtn {
+  font-family: 'Playwrite AU NSW', cursive;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--background);
+  background-color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 0.875rem 3rem;
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease,
+              border-color var(--transition-speed) ease,
+              color var(--transition-speed) ease;
+}
+
+.exploreBtn:hover:not(:disabled) {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+}
+
+.exploreBtn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.exploreBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .page {
+    gap: 1.75rem;
+    padding: 2rem 1rem 3rem;
+  }
+
+  .selectedSection {
+    padding: 1.25rem 1rem;
+  }
+
+  .exploreBtn {
+    width: 100%;
+    padding: 0.875rem 1rem;
+  }
+}

@@ -1,0 +1,286 @@
+/* TemporalControls.module.css — Phase 5D */
+
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background-color: transparent;
+  width: 100%;
+}
+
+/* ── Title Row ──────────────────────────────────────────── */
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.loadingBadge {
+  font-size: 0.72rem;
+  color: var(--secondary);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Divider ────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background-color: var(--accent);
+  opacity: 0.35;
+  margin: 0;
+}
+
+/* ── Control Row ────────────────────────────────────────── */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ── Control Label ──────────────────────────────────────── */
+.controlLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  min-width: 4.5rem;
+}
+
+/* ── Scale Selector (Segmented Control) ─────────────────── */
+.scaleSelector {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--accent);
+}
+
+.scaleBtn {
+  font-family: 'Playwrite AU NSW', cursive;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+  background: none;
+  color: var(--accent);
+  border: none;
+  border-right: 1px solid var(--accent);
+  transition: background-color var(--transition-speed) ease,
+              color var(--transition-speed) ease;
+  line-height: 1.4;
+}
+
+.scaleBtn:last-child {
+  border-right: none;
+}
+
+.scaleBtn:hover {
+  color: var(--primary);
+}
+
+.scaleBtnActive {
+  background-color: var(--primary);
+  color: var(--background);
+}
+
+.scaleBtnActive:hover {
+  background-color: var(--secondary);
+  color: var(--background);
+}
+
+.scaleBtn:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: -2px;
+}
+
+/* ── Date Inputs ────────────────────────────────────────── */
+.dateInputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.select {
+  font-family: inherit;
+  font-size: 0.82rem;
+  color: var(--text);
+  background: var(--background);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  outline: none;
+  appearance: auto;
+  -webkit-appearance: auto;
+  min-width: 4rem;
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 1px;
+}
+
+/* ── Slider Rows ────────────────────────────────────────── */
+.sliderRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.sliderHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.sliderValue {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.01em;
+  min-width: 6rem;
+  text-align: right;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  outline: none;
+  cursor: pointer;
+  border: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.slider:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}
+
+.sliderExtents {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  margin-top: 0.1rem;
+}
+
+/* ── Range Summary ──────────────────────────────────────── */
+.summary {
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  margin: 0;
+  padding-top: 0.1rem;
+  font-style: italic;
+}
+
+/* ── Confirm / Apply Button ─────────────────────────────────── */
+.confirmRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+}
+
+.confirmBtn {
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.35rem 1rem;
+  cursor: pointer;
+  background: none;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  transition: background-color var(--transition-speed) ease,
+              color var(--transition-speed) ease,
+              border-color var(--transition-speed) ease;
+  white-space: nowrap;
+}
+
+.confirmBtn:hover:not(:disabled) {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.confirmBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.confirmBtnDirty {
+  background-color: var(--primary);
+  color: var(--background);
+  border-color: var(--primary);
+}
+
+.confirmBtnDirty:hover:not(:disabled) {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+  color: var(--background);
+}
+
+.dirtyHint {
+  font-size: 0.68rem;
+  color: var(--secondary);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 540px) {
+  .box {
+    padding: 1.25rem 1rem;
+  }
+
+  .scaleBtn {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.68rem;
+  }
+
+  .row {
+    gap: 0.6rem;
+  }
+
+  .controlLabel {
+    min-width: 3.5rem;
+  }
+}

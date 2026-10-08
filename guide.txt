@@ -1,0 +1,163 @@
+================================================================================
+EARTH JUKEBOX — PHASE 4 SETUP & RUN GUIDE
+================================================================================
+
+This document details how to run and verify Earth Jukebox with the Phase 4
+live NASA GEOS-FP data pipeline (FastAPI backend + Vite React frontend).
+
+--------------------------------------------------------------------------------
+1. SYSTEM ARCHITECTURE
+--------------------------------------------------------------------------------
+
+   NASA GEOS-FP OPeNDAP Server
+   (https://opendap.nccs.nasa.gov/dods/GEOS-5/fp/0.25_deg/assim/inst3_2d_asm_Nx)
+                │
+                │ (xarray / netCDF4)
+                ▼
+   ┌─────────────────────────────────────────┐
+   │ EARTH JUKEBOX BACKEND (Python / FastAPI) │
+   │                                         │
+   │  - geos_fp.py: NASA data extraction,    │
+   │    Kelvin → Celsius conversion,         │
+   │    nearest grid selection, resolution   │
+   │    detection (3-hourly)                 │
+   │  - temperature.py: In-memory LRU cache  │
+   │  - REST API on http://127.0.0.1:8000     │
+   └────────────────────┬────────────────────┘
+                        │
+                        │ JSON REST API
+                        ▼
+   ┌─────────────────────────────────────────┐
+   │ EARTH JUKEBOX FRONTEND (React / Vite)   │
+   │                                         │
+   │  - temperatureApi.js: API Client        │
+   │  - ExplorePage.jsx: Synchronized player │
+   │    (Map + Graph + Readout + Sound)      │
+   │  - Dev Server on http://localhost:5173   │
+   └─────────────────────────────────────────┘
+
+--------------------------------------------------------------------------------
+2. PREREQUISITES
+--------------------------------------------------------------------------------
+
+- Python 3.10+ (tested with Python 3.13)
+- Node.js 18+ & npm
+- Internet connection (to access NASA OPeNDAP)
+
+--------------------------------------------------------------------------------
+3. RUNNING THE APPLICATION
+--------------------------------------------------------------------------------
+
+Open two separate terminal windows:
+
+--------------------------------------------------
+TERMINAL 1: BACKEND (FastAPI Server)
+--------------------------------------------------
+
+1. Navigate to the backend folder:
+   cd "p:\Project Library\Project Library 2 (Web)\Earth_Jukebox\Earth_Jukebox\backend"
+
+2. (First-time only) Install dependencies:
+   python -m pip install -r requirements.txt
+
+3. Start the FastAPI backend server:
+   python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+
+   Backend will be accessible at:
+   - Root Health Check: http://127.0.0.1:8000/health
+   - Interactive Docs:  http://127.0.0.1:8000/docs
+
+--------------------------------------------------
+TERMINAL 2: FRONTEND (React / Vite)
+--------------------------------------------------
+
+1. Navigate to the frontend project root:
+   cd "p:\Project Library\Project Library 2 (Web)\Earth_Jukebox\Earth_Jukebox"
+
+2. Start the Vite development server:
+   npm run dev
+
+   (If PowerShell script execution is restricted on Windows, use:)
+   cmd.exe /c "npm run dev"
+
+3. Open your browser and navigate to:
+   http://localhost:5173
+
+--------------------------------------------------------------------------------
+4. RUNNING TESTS
+--------------------------------------------------------------------------------
+
+All test commands should be executed from the backend directory:
+cd "p:\Project Library\Project Library 2 (Web)\Earth_Jukebox\Earth_Jukebox\backend"
+
+A) Unit Tests (Mocked, Offline):
+   python -m unittest tests/test_unit.py
+
+   Tests cover:
+   - Kelvin → Celsius unit conversion (273.15 K → 0.0 °C, 298.15 K → 25.0 °C)
+   - ISO 8601 UTC timestamp formatting
+   - Dynamic temporal resolution detection (3-hourly vs hourly vs 6-hourly)
+   - Missing-value (NaN) handling
+   - Request parameter validation (lat, lon, date range)
+   - Health check endpoint
+
+B) Integration Test (Live NASA OPeNDAP Server):
+   $env:NASA_INTEGRATION_TEST="1"; python -m unittest tests/test_integration.py
+
+   Verifies:
+   - Live network handshake with NASA OPeNDAP
+   - Extraction of Dhaka (23.8103° N, 90.4125° E) T2M observations
+   - Accurate grid coordinate resolution (23.75° N, 90.3125° E)
+   - Detection of true 3-hourly temporal resolution (180 minutes)
+
+--------------------------------------------------------------------------------
+5. API REFERENCE
+--------------------------------------------------------------------------------
+
+1. GET /health
+   Description: Simple liveness probe.
+   Response: {"status": "ok", "service": "earth-jukebox-api"}
+
+2. GET /api/temperature
+   Description: Retrieve temperature time series for a location and time window.
+   Parameters:
+     - lat: Latitude (-90 to 90)
+     - lon: Longitude (-180 to 180)
+     - start: Start datetime (ISO 8601 UTC, e.g. 2026-09-29T00:00:00Z)
+     - end: End datetime (ISO 8601 UTC, e.g. 2026-09-30T21:00:00Z)
+   Example:
+     http://127.0.0.1:8000/api/temperature?lat=23.8103&lon=90.4125&start=2026-09-29T00:00:00Z&end=2026-09-30T21:00:00Z
+
+3. GET /api/temperature/global
+   Description: Retrieve downsampled 360x180 global raster field for a timestamp.
+   Parameters:
+     - time: Target observation timestamp (ISO 8601 UTC)
+   Example:
+     http://127.0.0.1:8000/api/temperature/global?time=2026-09-30T15:00:00Z
+
+4. GET /api/temperature/metadata
+   Description: Retrieve dataset spatial and temporal resolution metadata.
+   Example:
+     http://127.0.0.1:8000/api/temperature/metadata
+
+--------------------------------------------------------------------------------
+6. KEY NOTES & ARCHITECTURAL HIGHLIGHTS
+--------------------------------------------------------------------------------
+
+- Temporal Resolution:
+  NASA GEOS-FP OPeNDAP inst3_2d_asm_Nx provides 3-hourly (180-minute) steps.
+  The backend dynamically discovers this from the dataset time coordinates.
+  Data is NOT fabricated or interpolated to appear hourly.
+
+- Spatial Grid Matching:
+  Nearest-neighbor selection is used. Responses return both requested coordinates
+  and the exact NASA grid center coordinates.
+
+- Production Flow:
+  All hardcoded/mock temperatures have been removed from the primary production
+  data path. Mock data is isolated strictly behind provider='mock' for testing.
+
+- Performance & Caching:
+  In-memory LRU cache stores queried time series and global grid rasters.
+  The OPeNDAP dataset handle is lazily opened and maintained across requests.
+================================================================================

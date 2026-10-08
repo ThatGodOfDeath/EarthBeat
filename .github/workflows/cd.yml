@@ -1,0 +1,69 @@
+name: CD - Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      service:
+        description: 'Service to deploy'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - backend
+          - frontend
+
+jobs:
+  deploy:
+    name: Trigger Render Deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Backend Web Service
+        if: ${{ inputs.service == 'all' || inputs.service == 'backend' || github.event_name == 'push' }}
+        env:
+          HOOK_URL: ${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK_URL" ]; then
+            echo "::warning ::RENDER_BACKEND_DEPLOY_HOOK secret is not configured. Skipping backend deploy trigger."
+            echo "To configure: In Render Dashboard -> Backend Service -> Settings -> Deploy Hook, copy URL and add as RENDER_BACKEND_DEPLOY_HOOK in GitHub repo secrets."
+          else
+            echo "Triggering Render Backend Web Service deployment..."
+            RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$HOOK_URL")
+            HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+            BODY=$(echo "$RESPONSE" | sed '$d')
+            echo "HTTP Status: $HTTP_CODE"
+            echo "Response: $BODY"
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              echo "Backend deployment triggered successfully."
+            else
+              echo "::error ::Failed to trigger backend deployment (HTTP $HTTP_CODE)"
+              exit 1
+            fi
+          fi
+
+      - name: Deploy Frontend Static Site
+        if: ${{ inputs.service == 'all' || inputs.service == 'frontend' || github.event_name == 'push' }}
+        env:
+          HOOK_URL: ${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK_URL" ]; then
+            echo "::warning ::RENDER_FRONTEND_DEPLOY_HOOK secret is not configured. Skipping frontend deploy trigger."
+            echo "To configure: In Render Dashboard -> Frontend Static Site -> Settings -> Deploy Hook, copy URL and add as RENDER_FRONTEND_DEPLOY_HOOK in GitHub repo secrets."
+          else
+            echo "Triggering Render Frontend Static Site deployment..."
+            RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$HOOK_URL")
+            HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+            BODY=$(echo "$RESPONSE" | sed '$d')
+            echo "HTTP Status: $HTTP_CODE"
+            echo "Response: $BODY"
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              echo "Frontend deployment triggered successfully."
+            else
+              echo "::error ::Failed to trigger frontend deployment (HTTP $HTTP_CODE)"
+              exit 1
+            fi
+          fi

@@ -1,0 +1,102 @@
+/* ScientificTimeSeriesGraph.module.css */
+
+.chartWrapper {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.5rem;
+  overflow: hidden;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Grid & Axes */
+.gridGroup {
+  pointer-events: none;
+}
+
+.gridLine {
+  stroke: #e5e7eb;
+  stroke-width: 0.75;
+  stroke-dasharray: 2, 2;
+  opacity: 1;
+}
+
+.tickLine {
+  stroke: #d1d5db;
+  stroke-width: 1;
+}
+
+.axisLabel {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  fill: #4b5563;
+  letter-spacing: 0.02em;
+}
+
+/* Data path */
+.dataLine {
+  fill: none;
+  stroke: #0284c7;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Points */
+.pointGroup {
+  cursor: pointer;
+  outline: none;
+}
+
+.hitTarget {
+  fill: transparent;
+}
+
+.dataPoint {
+  fill: #ffffff;
+  stroke: #0284c7;
+  stroke-width: 1.5;
+  transition: r 120ms ease, fill 120ms ease;
+}
+
+.pointGroup:hover .dataPoint,
+.pointGroup:focus-visible .dataPoint {
+  fill: #0369a1;
+  stroke: #0369a1;
+  r: 4.5;
+}
+
+/* Active playing point */
+.dataPointActive {
+  fill: #0369a1 !important;
+  stroke: #0369a1 !important;
+}
+
+.activeRing {
+  fill: none;
+  stroke: #0284c7;
+  stroke-width: 1.5;
+  opacity: 0.9;
+}
+
+/* Empty state */
+.emptyContainer {
+  padding: 2rem;
+  text-align: center;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+
+.emptyText {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
+}

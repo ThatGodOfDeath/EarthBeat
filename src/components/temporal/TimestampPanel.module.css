@@ -1,0 +1,312 @@
+/* TimestampPanel.module.css — Phase 5D */
+
+/* ── Toggle Button (always visible on right edge) ───────── */
+.toggleBtn {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 0.35rem;
+  background: var(--background);
+  border: 1px solid var(--accent);
+  border-right: none;
+  cursor: pointer;
+  transition: border-color var(--transition-speed) ease,
+              color var(--transition-speed) ease;
+  color: var(--accent);
+}
+
+.toggleBtn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.toggleBtn:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}
+
+.toggleBtnOpen {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.toggleIcon {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.toggleLabel {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* ── Panel ──────────────────────────────────────────────── */
+.panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: min(32vw, 420px);
+  background: var(--background);
+  border-left: 1px solid var(--accent);
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  overflow: hidden;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ── Panel Header ───────────────────────────────────────── */
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 1rem 1.1rem;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.panelTitleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.panelTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.countBadge {
+  font-size: 0.68rem;
+  color: var(--secondary);
+  font-weight: 700;
+}
+
+.deletedHint {
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.closeBtn {
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--accent);
+  background: none;
+  border: 1px solid var(--accent);
+  cursor: pointer;
+  padding: 0.35rem 0.55rem;
+  transition: color var(--transition-speed) ease,
+              border-color var(--transition-speed) ease;
+}
+
+.closeBtn:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.closeBtn:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 1px;
+}
+
+/* ── Scrollable Body ────────────────────────────────────── */
+.scrollableBody {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+.scrollableBody::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollableBody::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+}
+
+.controlsSection {
+  padding: 0.75rem 1rem;
+  flex-shrink: 0;
+}
+
+.timestampsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem 0.25rem;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.sectionSubtitle {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+/* ── Bulk Actions ───────────────────────────────────────── */
+.bulkActions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.actionBtn {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: none;
+  border: 1px solid var(--accent);
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  transition: color var(--transition-speed) ease,
+              border-color var(--transition-speed) ease;
+}
+
+.actionBtn:hover:not(:disabled) {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.actionBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.actionBtnDelete {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+.actionBtnDelete:hover:not(:disabled) {
+  color: var(--secondary);
+  border-color: var(--secondary);
+}
+
+/* ── Divider ────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background-color: var(--accent);
+  opacity: 0.25;
+  margin: 0.5rem 1rem;
+  flex-shrink: 0;
+}
+
+/* ── List Container ─────────────────────────────────────── */
+.listContainer {
+  flex: 1;
+  overflow-y: visible;
+  padding: 0.25rem 0.75rem 0.75rem;
+}
+
+.listContainer::-webkit-scrollbar {
+  width: 4px;
+}
+
+.listContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.listContainer::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  opacity: 0.5;
+}
+
+/* ── Empty State ────────────────────────────────────────── */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.emptyText {
+  font-size: 0.82rem;
+  color: var(--accent);
+  font-style: italic;
+  margin: 0;
+}
+
+.restoreBtn {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--primary);
+  background: none;
+  border: 1px solid var(--primary);
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease,
+              color var(--transition-speed) ease;
+}
+
+.restoreBtn:hover {
+  background-color: var(--primary);
+  color: var(--background);
+}
+
+.restoreBtn:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}
+
+/* ── Panel Footer ───────────────────────────────────────── */
+.panelFooter {
+  padding: 0.5rem 0.9rem;
+  border-top: 1px solid;
+  border-color: rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
+
+/* ── Responsive: Mobile/Tablet ──────────────────────────── */
+@media (max-width: 860px) {
+  .panel {
+    width: 100vw;
+    min-width: 0;
+  }
+
+  .toggleBtn {
+    position: fixed;
+    right: 0.5rem;
+    top: auto;
+    bottom: 1rem;
+    transform: none;
+    border: 1px solid var(--accent);
+    flex-direction: row;
+    padding: 0.5rem 0.75rem;
+    gap: 0.4rem;
+  }
+
+  .toggleLabel {
+    writing-mode: horizontal-tb;
+    font-size: 0.65rem;
+  }
+}
