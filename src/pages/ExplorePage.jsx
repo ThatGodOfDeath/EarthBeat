@@ -1317,7 +1317,7 @@ export default function ExplorePage() {
       >
         {/* ── Navigation ──────────────────────────────────────────────────── */}
         <nav className={styles.nav}>
-          <Link to="/" className={styles.navBack}>← Earth Jukebox</Link>
+          <Link to="/" className={styles.navBack}>← Back</Link>
         </nav>
 
         {/* ── Location Title ──────────────────────────────────────────────── */}
@@ -1330,7 +1330,7 @@ export default function ExplorePage() {
         {/* ── Loading State ────────────────────────────────────────────────── */}
         {localLoading && (
           <section className={styles.motherbox}>
-            <p className={styles.statusMessage}>Loading NASA GEOS-FP data…</p>
+            <p className={styles.statusMessage}>Loading data…</p>
           </section>
         )}
 
@@ -1338,7 +1338,7 @@ export default function ExplorePage() {
         {!localLoading && localError && (
           <section className={styles.motherbox}>
             <p className={styles.errorMessage}>{localError.message}</p>
-            <div className={styles.actionRow}>
+            {/* <div className={styles.actionRow}>
               <button
                 className={styles.btnPrimary}
                 onClick={() => {
@@ -1346,9 +1346,9 @@ export default function ExplorePage() {
                   setActiveLocation(DEFAULT_LOCATION)
                 }}
               >
-                Explore Dhaka NASA Dataset
+                Load Default Location
               </button>
-            </div>
+            </div> */}
           </section>
         )}
 
@@ -1412,7 +1412,7 @@ export default function ExplorePage() {
               <div id="tabpanel-temperature" role="tabpanel" aria-labelledby="tab-temperature">
                 <div className={styles.motherboxHeader}>
                   <div className={styles.motherboxTitleRow}>
-                    <h3 className={styles.motherboxTitle}>Temperature System — Air & Surface Skin Comparison</h3>
+                    <h3 className={styles.motherboxTitle}>Temperature System: Air & Surface Skin Comparison</h3>
                     <DataInfoTooltip
                       label="Temperature system information"
                       rows={tempInfoRows}
@@ -1420,7 +1420,7 @@ export default function ExplorePage() {
                     />
                   </div>
                   <div className={styles.motherboxMeta}>
-                    NASA GEOS-FP · T2M & TS (°C) · Air Temperature owns Pitch; Surface Skin modifies Timbral Brightness
+                    {/* NASA GEOS-FP · T2M & TS (°C) · Air Temperature owns Pitch; Surface Skin modifies Timbral Brightness */}
                   </div>
                 </div>
 
@@ -1469,7 +1469,7 @@ export default function ExplorePage() {
                         <div className={styles.readoutDate}>{formatFullDateTime(currentPoint.timestamp)}</div>
                         <div className={styles.readoutFrequency}>
                           <span className={styles.freqValue}>{currentFrequency} Hz</span>
-                          <span className={styles.freqLabel}>Primary mapped pitch (frozen formula)</span>
+                          {/* <span className={styles.freqLabel}>Primary mapped pitch (frozen formula)</span> */}
                         </div>
                       </div>
                     )}
@@ -1508,7 +1508,7 @@ export default function ExplorePage() {
                       </div>
                       <div className={styles.readoutFrequency}>
                         <span className={styles.freqValue}>{deltaTString} (Ts − T2m)</span>
-                        <span className={styles.freqLabel}>Timbral brightness modifier · No independent pitch</span>
+                        {/* <span className={styles.freqLabel}>Timbral brightness modifier · No independent pitch</span> */}
                       </div>
                     </div>
                     <div className={styles.chartContainer}>
@@ -1530,7 +1530,7 @@ export default function ExplorePage() {
               <div id="tabpanel-wind" role="tabpanel" aria-labelledby="tab-wind">
                 <div className={styles.motherboxHeader}>
                   <div className={styles.motherboxTitleRow}>
-                    <h3 className={styles.motherboxTitle}>Wind System — 10-Meter Wind Speed & Direction</h3>
+                    <h3 className={styles.motherboxTitle}>Wind System: 10-Meter Wind Speed & Direction</h3>
                     <DataInfoTooltip
                       label="Wind system information"
                       rows={windInfoRows}
@@ -1538,7 +1538,7 @@ export default function ExplorePage() {
                     />
                   </div>
                   <div className={styles.motherboxMeta}>
-                    NASA GEOS-FP · 10 m wind vector (U10M, V10M) · Speed controls Loudness; Direction controls Stereo Pan
+                    {/* NASA GEOS-FP · 10 m wind vector (U10M, V10M) · Speed controls Loudness; Direction controls Stereo Pan */}
                   </div>
                 </div>
 
@@ -1645,7 +1645,7 @@ export default function ExplorePage() {
               <div id="tabpanel-precipitation" role="tabpanel" aria-labelledby="tab-precipitation">
                 <div className={styles.motherboxHeader}>
                   <div className={styles.motherboxTitleRow}>
-                    <h3 className={styles.motherboxTitle}>Precipitation & Moisture System — Rain Rate & Water Vapor</h3>
+                    <h3 className={styles.motherboxTitle}>Precipitation & Moisture System: Rain Rate & Water Vapor</h3>
                     <DataInfoTooltip
                       label="Precipitation system information"
                       rows={precipInfoRows}
@@ -1653,7 +1653,7 @@ export default function ExplorePage() {
                     />
                   </div>
                   <div className={styles.motherboxMeta}>
-                    NASA GEOS-FP · TPRECMAX (mm/h) & TQV (kg/m²) · Controls Rain Droplet Density & Atmospheric Timbre
+                    {/* NASA GEOS-FP · TPRECMAX (mm/h) & TQV (kg/m²) · Controls Rain Droplet Density & Atmospheric Timbre */}
                   </div>
                 </div>
 
@@ -1698,7 +1698,7 @@ export default function ExplorePage() {
                       </div>
                       <div className={styles.readoutFrequency}>
                         <span className={styles.freqValue}>{precipIntensityLabel(currentPrecipMmHr)}</span>
-                        <span className={styles.freqLabel}>Rain droplet texture & density (gain controller)</span>
+                        {/* <span className={styles.freqLabel}>Rain droplet texture & density (gain controller)</span> */}
                       </div>
                     </div>
                     <div className={styles.chartContainer}>
@@ -1736,7 +1736,7 @@ export default function ExplorePage() {
                       </div>
                       <div className={styles.readoutFrequency}>
                         <span className={styles.freqValue}>{tqvLabel(currentEnvPoint?.tqv)}</span>
-                        <span className={styles.freqLabel}>Atmospheric moisture resonance & warmth</span>
+                        {/* <span className={styles.freqLabel}>Atmospheric moisture resonance & warmth</span> */}
                       </div>
                     </div>
                     <div className={styles.chartContainer}>
@@ -1758,7 +1758,7 @@ export default function ExplorePage() {
               <div id="tabpanel-pressure" role="tabpanel" aria-labelledby="tab-pressure">
                 <div className={styles.motherboxHeader}>
                   <div className={styles.motherboxTitleRow}>
-                    <h3 className={styles.motherboxTitle}>Pressure System — Atmospheric Surface Pressure</h3>
+                    <h3 className={styles.motherboxTitle}>Pressure System: Atmospheric Surface Pressure</h3>
                     <DataInfoTooltip
                       label="Pressure system information"
                       rows={pressureInfoRows}
@@ -1766,7 +1766,7 @@ export default function ExplorePage() {
                     />
                   </div>
                   <div className={styles.motherboxMeta}>
-                    NASA GEOS-FP · PS (hPa) · Experimental Atmospheric Timbre (Low-shelf boost & damping)
+                    {/* NASA GEOS-FP · PS (hPa) · Experimental Atmospheric Timbre (Low-shelf boost & damping) */}
                   </div>
                 </div>
 
@@ -1826,7 +1826,7 @@ export default function ExplorePage() {
                       </div>
                       <div className={styles.readoutFrequency}>
                         <span className={styles.freqValue}>{psAnomalyString} from 1013.25 hPa</span>
-                        <span className={styles.freqLabel}>Experimental timbre modifier · Low-shelf character</span>
+                        {/* <span className={styles.freqLabel}>Experimental timbre modifier · Low-shelf character</span> */}
                       </div>
                     </div>
 
@@ -1898,7 +1898,7 @@ export default function ExplorePage() {
                   title="Toggle Temperature Pitch Audio Layer"
                 >
                   <span className={styles.channelLed} />
-                  Temperature (Pitch)
+                  Temperature
                 </button>
                 <button
                   type="button"
@@ -1908,7 +1908,7 @@ export default function ExplorePage() {
                   title="Toggle Wind Noise Texture Audio Layer"
                 >
                   <span className={styles.channelLed} />
-                  Wind (Texture & Pan)
+                  Wind
                 </button>
                 <button
                   type="button"
@@ -1918,7 +1918,7 @@ export default function ExplorePage() {
                   title="Toggle Moisture (Rain + Atmosphere) Audio Layer"
                 >
                   <span className={styles.channelLed} />
-                  Moisture (Rain + Air)
+                  Moisture
                 </button>
                 <button
                   type="button"
@@ -1928,17 +1928,17 @@ export default function ExplorePage() {
                   title="Toggle Pressure Experimental Timbre Audio Layer"
                 >
                   <span className={styles.channelLed} />
-                  Pressure (Experimental)
+                  Pressure
                 </button>
               </div>
 
 
-              <button
+              {/* <button
                 className={styles.btnSecondaryText}
                 onClick={() => setProvider(provider === 'mock' ? 'geosfp' : 'mock')}
               >
                 {provider === 'mock' ? 'Use NASA GEOS-FP' : 'Test Mock Data'}
-              </button>
+              </button> */}
             </div>
           </section>
         )}

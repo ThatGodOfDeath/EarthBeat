@@ -168,7 +168,7 @@ export default function HomePage() {
     <main className={styles.page}>
       {/* ── Header ─────────────────────────────────────────── */}
       <header className={styles.header}>
-        <h1 className={styles.title}>Earth Jukebox</h1>
+        <h1 className={styles.title}>EarthBeat</h1>
         <p className={styles.tagline}>Don&apos;t just see Earth. Hear it.</p>
       </header>
 
